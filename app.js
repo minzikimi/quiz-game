@@ -10,6 +10,7 @@ const restartButton = document.getElementById("restart-btn");
 const errorMessage = document.getElementById("error-message");
 const correctAnswer = document.getElementById("correct-answer");
 const startMessage = document.getElementById("start-message");
+const questionNumber = document.getElementById("question-number");
 
 currentQuestionIndex = 0;
 score = 0;
@@ -57,7 +58,12 @@ async function startQuiz() {
   }
 }
 
-function displayQuiz (data){
+function displayQuiz(data) {
+  // Display the current question number
+  
+  questionNumber.textContent = `Question ${currentQuestionIndex + 1} of ${fetchedQuiz.results.length}`;
+
+  // Set the question text
   questionElement.textContent = data.question;
   document.getElementById("correct-answer").textContent = ""; 
   const answers = [...data.incorrect_answers, data.correct_answer];
@@ -70,7 +76,7 @@ function displayQuiz (data){
     const answerButton = document.createElement("button");
     answerButton.textContent = answer;
     answerButton.classList.add("answer-btn");
-    answerButton.addEventListener("click", (e)=> checkAnswer(e,data.correct_answer ))
+    answerButton.addEventListener("click", (e) => checkAnswer(e, data.correct_answer));
     answerButtonsContainer.appendChild(answerButton);
   });
 }
@@ -124,7 +130,6 @@ function endQuiz() {
 }
 
 function displayMessage() {
- 
   if (score >= 8) {
     endingMessage.textContent = "Well done! You know a lot about sports!";
   } else if (score >= 5) {
@@ -132,14 +137,14 @@ function displayMessage() {
   } else {
     endingMessage.textContent = "Keep learning! There's room for improvement in your sports knowledge.";
   }
-  
-  resultContainer.appendChild(endingMessage);
 }
 
 
 function restartQuiz() {
   currentQuestionIndex = 0;
   score = 0;
+  
+  questionNumber.textContent = "";
   questionContainer.style.display = "none";
   resultContainer.style.display = "none";
   startButton.style.display = "block";
